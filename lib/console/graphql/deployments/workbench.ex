@@ -528,6 +528,11 @@ defmodule Console.GraphQl.Deployments.Workbench do
       resolve &Deployments.list_workbench_knowledge/3
     end
 
+    connection field :workbench_dashboards, node_type: :workbench_dashboard do
+      middleware Nested, check: true, msg: "workbench dashboards cannot be fetched through a policy"
+      resolve &Deployments.list_dashboards/3
+    end
+
     field :eval, :workbench_eval, description: "eval configuration for this workbench (at most one; null if none configured)" do
       middleware Nested, check: true, msg: "workbench eval configuration cannot be fetched through a policy"
       resolve dataloader(Deployments)

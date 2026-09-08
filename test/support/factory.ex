@@ -707,6 +707,27 @@ defmodule Console.Factory do
     }
   end
 
+  def dashboard_factory do
+    %Schema.Dashboard{
+      name: sequence(:dashboard, &"dashboard-#{&1}"),
+      description: "dashboard description",
+      workbench: build(:workbench),
+      graphs: [
+        %Schema.Dashboard.Graph{
+          identifier: "requests",
+          title: "Requests",
+          type: :timeseries,
+          layout: %Schema.Dashboard.Graph.Layout{x: 0, y: 0, w: 2, h: 2},
+          datasource: %Schema.Dashboard.Datasource{
+            type: :metrics,
+            tool: "prometheus_query",
+            input: %{query: "up"}
+          }
+        }
+      ]
+    }
+  end
+
   def terraform_state_factory do
     %Schema.TerraformState{
       stack: build(:stack)
